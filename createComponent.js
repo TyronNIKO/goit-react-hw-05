@@ -3,9 +3,10 @@
 import fs from "fs";
 // const path = require("path");
 import path from "path";
+const folderName = "components"; //any name where you need create components
 try {
     // Define the path to the components directory
-    const componentsDir = path.join(process.cwd(), "src", "components");
+    const componentsDir = path.join(process.cwd(), "src", folderName);
 
     // Check if the components directory exists
     if (!fs.existsSync(componentsDir)) {
@@ -44,12 +45,11 @@ try {
 
         const ${componentName} = () => {
         return (
-                <div className={css.${componentName.toLowerCase()}}>
-                {/* Your component code here */}
-                </div>
-                );
+            <div className={css.${componentName.toLowerCase()}}>
+            {/* Your component code here */}
+            </div>
+            );
         };
-
         export default ${componentName};
         `;
 

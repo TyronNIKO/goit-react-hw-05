@@ -4,7 +4,7 @@ const SearchBar = ({onSubmit}) => {
     return (
         <header className={css["search-bar"]}>
             <form onSubmit={onSubmit}>
-                <input type="text" autoComplete="off" name="request" autoFocus placeholder="Search images and photos" />
+                <input type="text" autoComplete="off" name="request" autoFocus placeholder="Search movie" />
                 <button type="submit">
                     <FaMagnifyingGlass />
                 </button>

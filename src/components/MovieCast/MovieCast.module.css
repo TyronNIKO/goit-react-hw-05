@@ -1,0 +1,14 @@
+.moviecast {
+    /* Your styles here */
+}
+.moviecast ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.moviecast ul li{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    width: calc((100% - 15px * 5) / 6);
+}

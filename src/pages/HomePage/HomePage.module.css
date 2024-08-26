@@ -1,0 +1,17 @@
+.homepage {
+    /* Your styles here */
+}
+.trending-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.trending-list li {
+    width: calc((100% - 15px * 3 ) / 4);
+}
+.preview {
+    /* width: calc((100% - 15px) / 4); */
+}
+.adult {
+border: 1px solid red;
+}
