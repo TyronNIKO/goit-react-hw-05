@@ -29,8 +29,6 @@ const MoviesPage = () => {
         setMovieList([]);
         setError(false);
         setIsLoading(true);
-        setIsVisible(false);
-        setIsEmpty(false);
     };
 
     useEffect(() => {
@@ -42,7 +40,6 @@ const MoviesPage = () => {
                 const data = await searchMovie(search);
                 // console.log(data);
                 if (!data.results.length) {
-                    setIsEmpty(true);
                     toast.error("No such movies found");
                     return;
                 }

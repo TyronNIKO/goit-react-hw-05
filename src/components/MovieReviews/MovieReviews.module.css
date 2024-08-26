@@ -1,6 +1,4 @@
-.moviereviews {
-    /* Your styles here */
-}
+
 .moviereviews ul {
     @apply flex gap-4 flex-col
 }
