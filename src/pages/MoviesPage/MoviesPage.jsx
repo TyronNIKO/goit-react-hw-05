@@ -5,20 +5,20 @@ import css from "./MoviesPage.module.css";
 import {searchMovie} from "../../api/getMovies";
 import clsx from "clsx";
 import {Link, useLocation} from "react-router-dom";
+import Loader from "../../components/Loader/Loader";
+import {ErrorMessage} from "formik";
 
 const MoviesPage = () => {
     const [search, setSearch] = useState("");
     const [error, setError] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [movieList, setMovieList] = useState([]);
-    const [isEmpty, setIsEmpty] = useState(false);
-    const [isVisible, setIsVisible] = useState(false);
     const location = useLocation();
 
     const handleSubmit = e => {
         e.preventDefault();
         const request = e.target.elements.request.value;
-        console.log(request);
+        // console.log(request);
         if (request.trim() === "") {
             toast.error("Please enter search term!");
             return;
@@ -28,23 +28,29 @@ const MoviesPage = () => {
         e.target.reset();
         setMovieList([]);
         setError(false);
-        setLoading(true);
+        setIsLoading(true);
         setIsVisible(false);
         setIsEmpty(false);
     };
+
     useEffect(() => {
         if (!search) return;
         const fetchData = async () => {
-            setLoading(true);
+            setIsLoading(true);
             setError(null);
             try {
                 const data = await searchMovie(search);
-                console.log(data);
+                // console.log(data);
+                if (!data.results.length) {
+                    setIsEmpty(true);
+                    toast.error("No such movies found");
+                    return;
+                }
                 setMovieList(data.results);
             } catch (error) {
                 setError(error);
             } finally {
-                setLoading(false);
+                setIsLoading(false);
             }
         };
         fetchData();
@@ -56,23 +62,26 @@ const MoviesPage = () => {
         <div className={css.moviespage}>
             <SearchBar onSubmit={handleSubmit} />
             <Toaster position="top-right" />
-            <ul className={css["search-list"]}>
-                {movieList &&
-                    movieList.map(movie => {
-                        // console.log(movie);
-                        return (
-                            <li key={movie.id}>
-                                <div className={clsx(css.preview, movie.adult && css.adult)}>
-                                    <Link to={`/movies/${movie.id}`} state={{from: location}}>
-                                        <h3>
-                                            {movie.title} ({parseInt(movie.release_date)})
-                                        </h3>
-                                    </Link>
-                                </div>
-                            </li>
-                        );
-                    })}
-            </ul>
+            {isLoading && <Loader />}
+            {error && <ErrorMessage>{error.message}</ErrorMessage>}
+            <div className="container">
+                <ul className={css["search-list"]}>
+                    {movieList &&
+                        movieList.map(movie => {
+                            return (
+                                <li key={movie.id}>
+                                    <div className={clsx(css.preview, movie.adult && css.adult)}>
+                                        <Link to={`/movies/${movie.id}`} state={{from: location}}>
+                                            <h3>
+                                                {movie.title} {movie.release_date && parseInt(movie.release_date)}
+                                            </h3>
+                                        </Link>
+                                    </div>
+                                </li>
+                            );
+                        })}
+                </ul>
+            </div>
         </div>
     );
 };

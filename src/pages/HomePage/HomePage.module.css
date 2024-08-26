@@ -1,13 +1,15 @@
 .homepage {
     /* Your styles here */
 }
+.homepage h1{
+   @apply my-[15px] text-3xl/none
+}
 .trending-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
+
+    @apply flex flex-wrap gap-[15px]
 }
 .trending-list li {
-    width: calc((100% - 15px * 3 ) / 4);
+    @apply  w-full sm:w-[calc((100%_-_15px)_/_2)] md:w-[calc((100%_-_15px_*3)_/_4)];
 }
 .preview {
     /* width: calc((100% - 15px) / 4); */

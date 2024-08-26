@@ -3,8 +3,9 @@ import {getTrending} from "../../api/getMovies";
 import {Link, useLocation} from "react-router-dom";
 import clsx from "clsx";
 import css from "./HomePage.module.css";
-
-const imagePath = "https://image.tmdb.org/t/p/original";
+import {ErrorMessage} from "formik";
+import Loader from "../../components/Loader/Loader";
+import opts from "../../../opts";
 
 const HomePage = () => {
     const [movieList, setMovieList] = useState([]);
@@ -18,7 +19,7 @@ const HomePage = () => {
             setError(null);
             try {
                 const data = await getTrending();
-                console.log(data);
+                // console.log(data);
                 setMovieList(data);
             } catch (error) {
                 setError(error);
@@ -32,6 +33,8 @@ const HomePage = () => {
         <div className={css.homepage}>
             <div className="container">
                 <h1>Trending today</h1>
+                {isLoading && <Loader />}
+                {error && <ErrorMessage>{error.message}</ErrorMessage>}
                 <ul className={css["trending-list"]}>
                     {movieList.map(movie => {
                         // console.log(movie);
@@ -39,7 +42,7 @@ const HomePage = () => {
                             <li key={movie.id}>
                                 <div className={clsx(css.preview, movie.adult && css.adult)}>
                                     <Link to={`/movies/${movie.id}`} state={{from: location}}>
-                                        <img src={imagePath + movie.poster_path} alt={movie.title} />
+                                        <img src={opts.imagePath + movie.poster_path} alt={movie.title} />
                                         <h3>{movie.title}</h3>
                                         <div className="votes">{movie.vote_average}</div>
                                     </Link>

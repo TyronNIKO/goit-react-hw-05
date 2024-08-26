@@ -1,5 +1,18 @@
-
-        .moviereviews {
-        /* Your styles here */
-        }
-        
+.moviereviews {
+    /* Your styles here */
+}
+.moviereviews ul {
+    @apply flex gap-4 flex-col
+}
+.review {
+    @apply px-11 cursor-pointer
+}
+.info {
+    @apply flex gap-4 items-center mb-4
+}
+.avatar {
+    @apply rounded-full overflow-hidden w-14
+}
+.review h3 {
+    @apply text-3xl
+}

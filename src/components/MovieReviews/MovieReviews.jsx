@@ -2,6 +2,12 @@ import {useParams} from "react-router-dom";
 import css from "./MovieReviews.module.css";
 import {useEffect, useState} from "react";
 import {getMovieReviews} from "../../api/getMovies";
+import Loader from "../Loader/Loader";
+import {ErrorMessage} from "formik";
+import {Swiper, SwiperSlide} from "swiper/react";
+import {Navigation, Pagination, Scrollbar} from "swiper/modules";
+import "swiper/swiper-bundle.css";
+import opts from "../../../opts";
 
 const MovieReviews = () => {
     const {movieId} = useParams();
@@ -15,7 +21,7 @@ const MovieReviews = () => {
             setError(null);
             try {
                 const data = await getMovieReviews(movieId);
-                console.log(data);
+                // console.log(data);
                 setReviews(data.results);
             } catch (error) {
                 setError(error);
@@ -28,19 +34,29 @@ const MovieReviews = () => {
 
     return (
         <div className={css.moviereviews}>
-            <ul>
+            {isLoading && <Loader />}
+            {error && <ErrorMessage>{error.message}</ErrorMessage>}
+            <ul></ul>
+            <Swiper modules={[Navigation, Pagination, Scrollbar]} navigation scrollbar loop={true} autoplay={{delay: 3000}} spaceBetween={50} slidesPerView={1}>
                 {reviews &&
                     reviews.map(rewiev => {
                         return (
-                            <li key={rewiev.id}>
-                                <div className="review">
-                                    <h3>{rewiev.author}</h3>
+                            <SwiperSlide key={rewiev.id}>
+                                <div className={css.review}>
+                                    <div className={css.info}>
+                                        {rewiev.author_details.avatar_path && (
+                                            <div className={css.avatar}>
+                                                <img src={opts.imagePath + rewiev.author_details.avatar_path} />
+                                            </div>
+                                        )}
+                                        <h3>{rewiev.author}</h3>
+                                    </div>
                                     <p>{rewiev.content}</p>
                                 </div>
-                            </li>
+                            </SwiperSlide>
                         );
                     })}
-            </ul>
+            </Swiper>
         </div>
     );
 };

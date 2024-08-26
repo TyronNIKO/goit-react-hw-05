@@ -22,7 +22,7 @@ const MovieDetailsPage = () => {
             setError(null);
             try {
                 const data = await fetchById(movieId);
-                console.log(data);
+                // console.log(data);
                 setMovie(data);
             } catch (error) {
                 setError(error);
@@ -38,11 +38,11 @@ const MovieDetailsPage = () => {
     return (
         <div className={css.moviedetailspage}>
             <div className="container">
-                <GoBackBtn path={goBack.current}>Back to trendings</GoBackBtn>
+                <GoBackBtn path={goBack.current}>Back to list</GoBackBtn>
                 {isLoading && <Loader />}
                 {error && <ErrorMessage>Error: {error.message}</ErrorMessage>}
                 {movie && <MovieDetails movie={movie} />}
-                <p>Aditional information</p>
+                <h2>Aditional information</h2>
                 <ul>
                     <li>
                         <NavLink to={`cast`}>Cast</NavLink>

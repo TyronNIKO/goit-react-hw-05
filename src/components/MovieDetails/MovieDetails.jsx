@@ -4,8 +4,6 @@ import css from "./MovieDetails.module.css";
 const imagePath = "https://image.tmdb.org/t/p/original";
 
 const MovieDetails = ({movie}) => {
-    console.log(movie);
-
     return (
         <div className={clsx(css.moviedetails, movie.adult && css.adult)}>
             <img src={imagePath + movie.poster_path} alt={movie.title} />
@@ -20,5 +18,4 @@ const MovieDetails = ({movie}) => {
         </div>
     );
 };
-
 export default MovieDetails;

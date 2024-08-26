@@ -19,7 +19,7 @@ const MovieCast = () => {
             setError(null);
             try {
                 const data = await getMovieCast(movieId);
-                console.log(data);
+                // console.log(data);
                 setMovie(data);
             } catch (error) {
                 setError(error);

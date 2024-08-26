@@ -1,3 +1,15 @@
 .moviedetailspage {
-    padding: 30px 0 ;
+/* test */
+}
+.moviedetailspage h2 {
+    @apply my-4 text-2xl/none
+}
+.moviedetailspage ul {
+    @apply flex gap-4 mb-4
+}
+.moviedetailspage ul li a {
+    @apply hover:text-red-500 transition-colors
+}
+.moviedetailspage ul li a.active {
+    @apply text-red-500
 }
