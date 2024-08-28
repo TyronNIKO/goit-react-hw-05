@@ -1,17 +1,17 @@
 import {useEffect, useState} from "react";
 import {getTrending} from "../../api/getMovies";
-import {Link, useLocation} from "react-router-dom";
-import clsx from "clsx";
-import css from "./HomePage.module.css";
-import {ErrorMessage} from "formik";
+
 import Loader from "../../components/Loader/Loader";
-import opts from "../../../opts";
+import MovieList from "../../components/MovieList/MovieList";
+import ErrorMsg from "../../components/ErrorMsg/ErrorMsg";
+
+import css from "./HomePage.module.css";
 
 const HomePage = () => {
     const [movieList, setMovieList] = useState([]);
+    const [typeToShow, setTypeToShow] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-    const location = useLocation();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -21,6 +21,7 @@ const HomePage = () => {
                 const data = await getTrending();
                 // console.log(data);
                 setMovieList(data);
+                setTypeToShow("trending");
             } catch (error) {
                 setError(error);
             } finally {
@@ -34,23 +35,8 @@ const HomePage = () => {
             <div className="container">
                 <h1>Trending today</h1>
                 {isLoading && <Loader />}
-                {error && <ErrorMessage>{error.message}</ErrorMessage>}
-                <ul className={css["trending-list"]}>
-                    {movieList.map(movie => {
-                        // console.log(movie);
-                        return (
-                            <li key={movie.id}>
-                                <div className={clsx(css.preview, movie.adult && css.adult)}>
-                                    <Link to={`/movies/${movie.id}`} state={{from: location}}>
-                                        <img src={opts.imagePath + movie.poster_path} alt={movie.title} />
-                                        <h3>{movie.title}</h3>
-                                        <div className="votes">{movie.vote_average}</div>
-                                    </Link>
-                                </div>
-                            </li>
-                        );
-                    })}
-                </ul>
+                {error && <ErrorMsg>{error.message}</ErrorMsg>}
+                <MovieList movieList={movieList} typeToShow={typeToShow} />
             </div>
         </div>
     );

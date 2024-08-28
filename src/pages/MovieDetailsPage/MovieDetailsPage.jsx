@@ -6,7 +6,7 @@ import {GoBackBtn} from "../../components/GoBackBtn/GoBackBtn";
 import {fetchById} from "../../api/getMovies";
 import MovieDetails from "../../components/MovieDetails/MovieDetails";
 import Loader from "../../components/Loader/Loader";
-import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
+import ErrorMsg from "../../components/ErrorMsg/ErrorMsg";
 
 const MovieDetailsPage = () => {
     const {movieId} = useParams();
@@ -40,7 +40,7 @@ const MovieDetailsPage = () => {
             <div className="container">
                 <GoBackBtn path={goBack.current}>Back to list</GoBackBtn>
                 {isLoading && <Loader />}
-                {error && <ErrorMessage>Error: {error.message}</ErrorMessage>}
+                {error && <ErrorMsg>Error: {error.message}</ErrorMsg>}
                 {movie && <MovieDetails movie={movie} />}
                 <h2>Aditional information</h2>
                 <ul>

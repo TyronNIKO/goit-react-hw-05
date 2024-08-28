@@ -1,0 +1,13 @@
+.nav{
+    display: flex;
+    gap: 10px;
+}
+.link{
+    display: block;
+    padding: 15px;
+    transition: 250ms ease-out;
+    transition-property: color;
+}
+.active {
+    color: red;
+}

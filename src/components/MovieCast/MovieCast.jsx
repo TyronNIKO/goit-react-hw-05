@@ -2,8 +2,9 @@ import {useEffect, useMemo, useState} from "react";
 import css from "./MovieCast.module.css";
 import {useParams} from "react-router-dom";
 import {getMovieCast} from "../../api/getMovies";
-import {ErrorMessage} from "formik";
+
 import Loader from "../Loader/Loader";
+import ErrorMsg from "../ErrorMsg/ErrorMsg";
 
 const imagePath = "https://image.tmdb.org/t/p/original";
 
@@ -37,7 +38,7 @@ const MovieCast = () => {
     return (
         <div className={css.moviecast}>
             {isLoading && <Loader />}
-            {error && <ErrorMessage>Error: {error.message}</ErrorMessage>}
+            {error && <ErrorMsg>Error: {error.message}</ErrorMsg>}
             <ul>
                 {haveImage.map(person => {
                     return (

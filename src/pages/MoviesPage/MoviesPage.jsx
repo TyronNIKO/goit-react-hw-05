@@ -1,19 +1,20 @@
 import {useEffect, useState} from "react";
-import SearchBar from "../../components/SearchBar/SearchBar";
 import toast, {Toaster} from "react-hot-toast";
-import css from "./MoviesPage.module.css";
+import {useSearchParams} from "react-router-dom";
 import {searchMovie} from "../../api/getMovies";
-import clsx from "clsx";
-import {Link, useLocation} from "react-router-dom";
+import SearchBar from "../../components/SearchBar/SearchBar";
 import Loader from "../../components/Loader/Loader";
-import {ErrorMessage} from "formik";
+import MovieList from "../../components/MovieList/MovieList";
+import ErrorMsg from "../../components/ErrorMsg/ErrorMsg";
+import css from "./MoviesPage.module.css";
 
 const MoviesPage = () => {
-    const [search, setSearch] = useState("");
-    const [error, setError] = useState(false);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [search, setSearch] = useState(searchParams.get("request") || "");
+    const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [movieList, setMovieList] = useState([]);
-    const location = useLocation();
+    const [typeToShow, setTypeToShow] = useState("");
 
     const handleSubmit = e => {
         e.preventDefault();
@@ -23,7 +24,10 @@ const MoviesPage = () => {
             toast.error("Please enter search term!");
             return;
         }
+
         setSearch(request);
+        const nextParams = request !== "" ? {request} : {};
+        setSearchParams(nextParams);
 
         e.target.reset();
         setMovieList([]);
@@ -44,6 +48,7 @@ const MoviesPage = () => {
                     return;
                 }
                 setMovieList(data.results);
+                setTypeToShow("search");
             } catch (error) {
                 setError(error);
             } finally {
@@ -53,31 +58,16 @@ const MoviesPage = () => {
         fetchData();
     }, [search]);
 
-    movieList.sort((a, b) => new Date(a.release_date) - new Date(b.release_date));
+    const sortedMovies = [...movieList].sort((a, b) => new Date(a.release_date) - new Date(b.release_date));
 
     return (
         <div className={css.moviespage}>
             <SearchBar onSubmit={handleSubmit} />
             <Toaster position="top-right" />
             {isLoading && <Loader />}
-            {error && <ErrorMessage>{error.message}</ErrorMessage>}
+            {error && <ErrorMsg>Error: {error.message}</ErrorMsg>}
             <div className="container">
-                <ul className={css["search-list"]}>
-                    {movieList &&
-                        movieList.map(movie => {
-                            return (
-                                <li key={movie.id}>
-                                    <div className={clsx(css.preview, movie.adult && css.adult)}>
-                                        <Link to={`/movies/${movie.id}`} state={{from: location}}>
-                                            <h3>
-                                                {movie.title} {movie.release_date && parseInt(movie.release_date)}
-                                            </h3>
-                                        </Link>
-                                    </div>
-                                </li>
-                            );
-                        })}
-                </ul>
+                <MovieList movieList={sortedMovies} typeToShow={typeToShow} />
             </div>
         </div>
     );

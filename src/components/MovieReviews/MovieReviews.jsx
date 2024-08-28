@@ -3,11 +3,11 @@ import css from "./MovieReviews.module.css";
 import {useEffect, useState} from "react";
 import {getMovieReviews} from "../../api/getMovies";
 import Loader from "../Loader/Loader";
-import {ErrorMessage} from "formik";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Navigation, Pagination, Scrollbar} from "swiper/modules";
 import "swiper/swiper-bundle.css";
 import opts from "../../../opts";
+import ErrorMsg from "../ErrorMsg/ErrorMsg";
 
 const MovieReviews = () => {
     const {movieId} = useParams();
@@ -35,8 +35,7 @@ const MovieReviews = () => {
     return (
         <div className={css.moviereviews}>
             {isLoading && <Loader />}
-            {error && <ErrorMessage>{error.message}</ErrorMessage>}
-            <ul></ul>
+            {error && <ErrorMsg>{error.message}</ErrorMsg>}
             <Swiper modules={[Navigation, Pagination, Scrollbar]} navigation scrollbar loop={true} autoplay={{delay: 3000}} spaceBetween={50} slidesPerView={1}>
                 {reviews &&
                     reviews.map(rewiev => {
